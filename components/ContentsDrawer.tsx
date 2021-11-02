@@ -1,37 +1,33 @@
-import Image from "next/image";
 import { useRef } from "react";
 import styled from "styled-components";
 
 import List from "components/List";
+import Icon from "components/Icon";
+import StoreImage from "components/StoreImage";
 
 import { useOnClickOutside, useDrawer, CustomMarker } from "hooks";
 import { isFullObject } from "utils";
-import { Feature } from "types/model";
 
 interface Props {
-  properties: Feature[];
   storeDetail: google.maps.places.PlaceResult;
   searchStoreDetail: (keyword: string) => void;
   markers: CustomMarker[];
 }
 
-const ContentsDrawer = ({
-  properties,
-  storeDetail,
-  searchStoreDetail,
-  markers,
-}: Props) => {
+const ContentsDrawer = ({ storeDetail, searchStoreDetail, markers }: Props) => {
   const ref = useRef();
   const { isDrawerOpen, handleDrawerOpen } = useDrawer();
 
-  useOnClickOutside(ref, (e: any) => {
+  const handleClickOutSide = (e: any) => {
     const nodeList = document.querySelectorAll("div[role='button']");
     const isMarkerClicked = [...nodeList].some((node) =>
       node.contains(e.target)
     );
 
     if (!isMarkerClicked) handleDrawerOpen(false);
-  });
+  };
+
+  useOnClickOutside(ref, handleClickOutSide);
 
   const storeImgURL = storeDetail.photos?.[0].getUrl();
 
@@ -39,7 +35,7 @@ const ContentsDrawer = ({
     <Container ref={ref}>
       <Tab onClick={() => handleDrawerOpen(!isDrawerOpen)} />
       <StoreList>
-        {properties.map((prop, idx) => (
+        {markers.map(({ property: prop }, idx) => (
           <List
             key={prop.properties.name + idx}
             {...prop.properties}
@@ -107,29 +103,4 @@ const StoreDetail = styled.div`
   }
 `;
 
-const ImageContainer = styled.div`
-  height: 350px;
-  position: relative;
-`;
-
-const ImageWrapper = styled.div`
-  display: inline-block;
-`;
-
-const Icon = ({ src }: { src: string }) => {
-  return (
-    <ImageWrapper>
-      <Image alt="icon" width={20} height={20} src={src} />
-    </ImageWrapper>
-  );
-};
-
 const OpeningHour = styled.span``;
-
-const StoreImage = ({ src }: { src: string }) => {
-  return (
-    <ImageContainer>
-      <Image layout="fill" src={src ?? "/vercel.svg"} alt="store_image" />
-    </ImageContainer>
-  );
-};

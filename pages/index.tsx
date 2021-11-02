@@ -3,23 +3,17 @@ import styled from "styled-components";
 
 import ContentsDrawer from "components/ContentsDrawer";
 
-import { useGoogleMap, useDrawer, useProperties } from "hooks";
+import { useGoogleMap, useDrawer } from "hooks";
 
 const Home: NextPage = () => {
   const { isDrawerOpen } = useDrawer();
-  const { storeDetail, searchStoreDetail, markers, setMarkers } =
-    useGoogleMap();
-  const { properties } = useProperties({
-    setMarkers,
-    searchStoreDetail,
-  });
+  const { storeDetail, searchStoreDetail, markers } = useGoogleMap();
 
   return (
     <Container>
       <GoogleMap id="map" isDrawerOpen={isDrawerOpen} />
       <ContentsDrawer
         markers={markers}
-        properties={properties}
         storeDetail={storeDetail}
         searchStoreDetail={searchStoreDetail}
       />

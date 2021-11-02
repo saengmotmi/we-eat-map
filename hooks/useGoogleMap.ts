@@ -1,8 +1,9 @@
 import { useState, useEffect, useRef } from "react";
-import { useDrawer, useProperties, useStoreDetail } from "hooks";
+import { useDrawer, useStoreDetail, useProperties } from "hooks";
+import { Feature } from "types/model";
 
 export let map: google.maps.Map | null = null;
-export type CustomMarker = { marker: google.maps.Marker; name: string };
+export type CustomMarker = { marker: google.maps.Marker; property: Feature };
 
 export const useGoogleMap = () => {
   useInitGoogleMap();
@@ -10,12 +11,17 @@ export const useGoogleMap = () => {
 
   const { storeDetail } = useStoreDetail();
   const { searchStoreDetail } = useGoogleMapSearch();
+  const { isLoading } = useProperties({
+    setMarkers,
+    searchStoreDetail,
+  });
 
   return {
     storeDetail,
     markers,
     setMarkers,
     searchStoreDetail,
+    isLoading,
   };
 };
 
