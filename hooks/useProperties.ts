@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Feature } from "types/model";
 
-export const useProperties = ({ mapRef, setMarkers, searchStoreDetail }) => {
+export const useProperties = ({ map, setMarkers, searchStoreDetail }) => {
   const [properties, setProperties] = useState<Feature[]>([]);
 
   useEffect(() => {
@@ -11,11 +11,11 @@ export const useProperties = ({ mapRef, setMarkers, searchStoreDetail }) => {
       const [lng, lat] = prop.geometry.coordinates;
       const marker = new google.maps.Marker({
         position: { lat, lng },
-        map: mapRef.current,
+        map: map.current,
       });
 
       marker.addListener("click", () => {
-        mapRef.current!.setCenter(marker.getPosition() as google.maps.LatLng);
+        map.current!.setCenter(marker.getPosition() as google.maps.LatLng);
 
         searchStoreDetail(prop.properties.name);
       });

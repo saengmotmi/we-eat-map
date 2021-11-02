@@ -1,15 +1,11 @@
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "redux/store";
-import { drawerActions } from "redux/slice/drawer/slice";
+import { useRecoilState } from "recoil";
+import { drawerState } from "store/drawer/atom";
 
 export const useDrawer = () => {
-  const dispatch = useDispatch();
-  const { isDrawerOpen } = useSelector(
-    (state: RootState) => state.drawerReducer
-  );
+  const [isDrawerOpen, dispatch] = useRecoilState(drawerState);
 
   const handleDrawerOpen = (status: boolean) => {
-    dispatch(drawerActions(status));
+    dispatch(status);
   };
 
   return { isDrawerOpen, handleDrawerOpen };

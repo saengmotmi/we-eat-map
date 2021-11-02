@@ -6,18 +6,20 @@ import ContentsDrawer from "components/ContentsDrawer";
 
 import { useGoogleMap, useDrawer } from "hooks";
 import { Welcome } from "types/model";
+import { useRecoilState } from "recoil";
+import { mapContainerState, mapState } from "store/map/atom";
 
 const Home: NextPage = () => {
+  const { isDrawerOpen } = useDrawer();
   const {
     properties,
     storeDetail,
     setProperties,
-    mapContainerRef,
+    mapContainer,
     searchStoreDetail,
-    mapRef,
+    map,
     markers,
   } = useGoogleMap();
-  const { isDrawerOpen } = useDrawer();
 
   useEffect(() => {
     (async () => {
@@ -31,9 +33,9 @@ const Home: NextPage = () => {
 
   return (
     <Container>
-      <GoogleMap isDrawerOpen={isDrawerOpen} ref={mapContainerRef} />
+      <GoogleMap id="map" isDrawerOpen={isDrawerOpen} ref={mapContainer} />
       <ContentsDrawer
-        mapRef={mapRef}
+        mapRef={map}
         markers={markers}
         properties={properties}
         storeDetail={storeDetail}

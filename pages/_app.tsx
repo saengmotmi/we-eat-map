@@ -1,8 +1,6 @@
 import type { AppProps } from "next/app";
-import { Provider } from "react-redux";
+import { RecoilRoot } from "recoil";
 import { createGlobalStyle, ThemeProvider } from "styled-components";
-
-import store from "redux/store";
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -23,11 +21,11 @@ const theme = {
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <Provider store={store}>
+    <RecoilRoot>
       <GlobalStyle />
       <ThemeProvider theme={theme}>
         <Component {...pageProps} />
       </ThemeProvider>
-    </Provider>
+    </RecoilRoot>
   );
 }

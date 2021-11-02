@@ -1,15 +1,11 @@
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "redux/store";
-import { storeDetailActions } from "redux/slice/storeDetail/slice";
+import { useRecoilState } from "recoil";
+import { storeDetailState } from "store/storeDetail/atom";
 
 export const useStoreDetail = () => {
-  const dispatch = useDispatch();
-  const storeDetail = useSelector(
-    (state: RootState) => state.storeDetailReducer
-  );
+  const [storeDetail, dispatch] = useRecoilState(storeDetailState);
 
   const handleStoreDetail = (payload: google.maps.places.PlaceResult) => {
-    dispatch(storeDetailActions(payload));
+    dispatch(payload);
   };
 
   return { storeDetail, handleStoreDetail };
