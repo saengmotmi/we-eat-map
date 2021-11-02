@@ -2,13 +2,12 @@ import type { NextPage } from "next";
 import { useState, useEffect } from "react";
 import styled from "styled-components";
 
-import Contents from "components/Contents";
+import ContentsDrawer from "components/ContentsDrawer";
 
-import { useGoogleMap } from "hooks";
+import { useGoogleMap, useDrawer } from "hooks";
 import { Welcome } from "types/model";
 
 const Home: NextPage = () => {
-  const [isTabOpen, setIsTabOpen] = useState(false);
   const {
     properties,
     storeDetail,
@@ -17,7 +16,8 @@ const Home: NextPage = () => {
     searchStoreDetail,
     mapRef,
     markers,
-  } = useGoogleMap({ setIsTabOpen });
+  } = useGoogleMap();
+  const { isDrawerOpen } = useDrawer();
 
   useEffect(() => {
     (async () => {
@@ -31,15 +31,13 @@ const Home: NextPage = () => {
 
   return (
     <Container>
-      <GoogleMap isTabOpen={isTabOpen} ref={mapContainerRef} />
-      <Contents
+      <GoogleMap isDrawerOpen={isDrawerOpen} ref={mapContainerRef} />
+      <ContentsDrawer
         mapRef={mapRef}
         markers={markers}
         properties={properties}
         storeDetail={storeDetail}
         searchStoreDetail={searchStoreDetail}
-        isTabOpen={isTabOpen}
-        setIsTabOpen={setIsTabOpen}
       />
     </Container>
   );
@@ -52,7 +50,7 @@ const Container = styled.main`
   overflow: hidden;
 `;
 
-const GoogleMap = styled.div<{ isTabOpen: boolean }>`
-  height: ${({ isTabOpen }) => (isTabOpen ? "50vh" : "100vh")};
+const GoogleMap = styled.div<{ isDrawerOpen: boolean }>`
+  height: ${({ isDrawerOpen }) => (isDrawerOpen ? "50vh" : "100vh")};
   transition: all 0.5s ease-in-out;
 `;

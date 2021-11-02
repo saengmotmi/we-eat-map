@@ -1,18 +1,15 @@
-import { useState, useEffect, useRef, Dispatch, SetStateAction } from "react";
-import { Feature } from "types/model";
+import { useState, useEffect, useRef } from "react";
+import { useDrawer, useProperties, useStoreDetail } from "hooks";
 
-interface Props {
-  setIsTabOpen: Dispatch<SetStateAction<boolean>>;
-}
+interface Props {}
 
-export const useGoogleMap = ({ setIsTabOpen }: Props) => {
+export const useGoogleMap = () => {
   const mapContainerRef = useRef<HTMLElement>(null);
   const mapRef = useRef<google.maps.Map | null>(null);
-  const serviceRef = useRef<google.maps.places.PlacesService>();
   const [markers, setMarkers] = useState<
     { marker: google.maps.Marker; name: string }[]
   >([]);
-  const [properties, setProperties] = useState<Feature[]>([]);
+
   const [storeDetail, setStoreDetail] =
     useState<google.maps.places.PlaceResult>({});
 
@@ -30,29 +27,31 @@ export const useGoogleMap = ({ setIsTabOpen }: Props) => {
     })();
   }, []);
 
-  useEffect(() => {
-    if (!properties.length) return;
+  const { searchStoreDetail } = useGoogleMapSearch({ mapRef });
+  const { properties, setProperties } = useProperties({
+    mapRef,
+    setMarkers,
+    searchStoreDetail,
+  });
 
-    const markers = properties.map((prop) => {
-      const [lng, lat] = prop.geometry.coordinates;
-      const marker = new google.maps.Marker({
-        position: { lat, lng },
-        map: mapRef.current,
-      });
+  return {
+    properties,
+    storeDetail,
+    mapRef,
+    mapContainerRef,
+    markers,
+    setProperties,
+    searchStoreDetail,
+  };
+};
 
-      marker.addListener("click", () => {
-        mapRef.current!.setCenter(marker.getPosition() as google.maps.LatLng);
-
-        searchStoreDetail(prop.properties.name);
-      });
-      return { marker, name: prop.properties.name };
-    });
-
-    setMarkers(markers);
-  }, [properties]);
+const useGoogleMapSearch = ({ mapRef }) => {
+  const serviceRef = useRef<google.maps.places.PlacesService>();
+  const { handleDrawerOpen } = useDrawer();
+  const { handleStoreDetail } = useStoreDetail();
 
   const searchStoreDetail = (name: string) => {
-    setIsTabOpen(true);
+    handleDrawerOpen(true);
 
     const request: google.maps.places.TextSearchRequest = {
       location: mapRef.current!.getCenter(),
@@ -64,18 +63,11 @@ export const useGoogleMap = ({ setIsTabOpen }: Props) => {
     serviceRef.current.textSearch(request, (results, status) => {
       if (!results!.length) alert("해당 장소에 대한 정보를 찾지 못했습니다");
       if (status == google.maps.places.PlacesServiceStatus.OK) {
-        setStoreDetail(results![0]);
+        console.log(JSON.parse(JSON.stringify(results![0])));
+        handleStoreDetail(JSON.parse(JSON.stringify(results![0])));
       }
     });
   };
 
-  return {
-    properties,
-    storeDetail,
-    mapRef,
-    mapContainerRef,
-    markers,
-    setProperties,
-    searchStoreDetail,
-  };
+  return { searchStoreDetail };
 };

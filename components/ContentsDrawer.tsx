@@ -1,39 +1,30 @@
-import {
-  useState,
-  useEffect,
-  useRef,
-  Dispatch,
-  SetStateAction,
-  RefObject,
-} from "react";
+import { useRef, Dispatch, SetStateAction, RefObject } from "react";
 import Image from "next/image";
 import styled from "styled-components";
 
 import List from "components/List";
 
-import { useOnClickOutside } from "hooks";
+import { useOnClickOutside, useDrawer } from "hooks";
 import { isFullObject } from "utils";
 import { Feature } from "types/model";
 
 interface Props {
   mapRef: RefObject<google.maps.Map>;
-  isTabOpen: boolean;
-  setIsTabOpen: Dispatch<SetStateAction<boolean>>;
   properties: Feature[];
   storeDetail: google.maps.places.PlaceResult;
   searchStoreDetail: (keyword: string) => void;
   markers: { marker: google.maps.Marker; name: string }[];
 }
 
-const Contents = ({
+const ContentsDrawer = ({
   properties,
   storeDetail,
   searchStoreDetail,
-  setIsTabOpen,
   mapRef,
   markers,
 }: Props) => {
   const ref = useRef();
+  const { isDrawerOpen, handleDrawerOpen } = useDrawer();
 
   useOnClickOutside(ref, (e: any) => {
     const nodeList = document.querySelectorAll("div[role='button']");
@@ -41,14 +32,14 @@ const Contents = ({
       node.contains(e.target)
     );
 
-    if (!isMarkerClicked) setIsTabOpen(false);
+    if (!isMarkerClicked) handleDrawerOpen(false);
   });
 
   const storeImgURL = storeDetail.photos?.[0].getUrl();
 
   return (
     <Container ref={ref}>
-      <Tab onClick={() => setIsTabOpen((prev) => !prev)} />
+      <Tab onClick={() => handleDrawerOpen(!isDrawerOpen)} />
       <StoreList>
         {properties.map((prop, idx) => (
           <List
@@ -81,7 +72,7 @@ const Contents = ({
   );
 };
 
-export default Contents;
+export default ContentsDrawer;
 
 const Container = styled.div`
   position: relative;
