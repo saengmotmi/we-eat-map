@@ -1,26 +1,18 @@
-import { RefObject } from "react";
+import { map } from "hooks/useGoogleMap";
 import { Properties } from "types/model";
 
 interface Props extends Properties {
-  mapRef: RefObject<google.maps.Map>;
   markers: { marker: google.maps.Marker; name: string }[];
   searchStoreDetail: (keyword: string) => void;
 }
 
-export default function List({
-  name,
-  markers,
-  mapRef,
-  searchStoreDetail,
-}: Props) {
+export default function List({ name, markers, searchStoreDetail }: Props) {
   return (
     <li
       onClick={() => {
         const marker = markers.find((marker) => marker.name === name);
 
-        mapRef.current!.setCenter(
-          marker?.marker.getPosition() as google.maps.LatLng
-        );
+        map!.setCenter(marker?.marker.getPosition() as google.maps.LatLng);
         searchStoreDetail(name);
       }}
     >

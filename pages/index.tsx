@@ -1,41 +1,23 @@
 import type { NextPage } from "next";
-import { useState, useEffect } from "react";
 import styled from "styled-components";
 
 import ContentsDrawer from "components/ContentsDrawer";
 
-import { useGoogleMap, useDrawer } from "hooks";
-import { Welcome } from "types/model";
-import { useRecoilState } from "recoil";
-import { mapContainerState, mapState } from "store/map/atom";
+import { useGoogleMap, useDrawer, useProperties } from "hooks";
 
 const Home: NextPage = () => {
   const { isDrawerOpen } = useDrawer();
-  const {
-    properties,
-    storeDetail,
-    setProperties,
-    mapContainer,
+  const { storeDetail, searchStoreDetail, markers, setMarkers } =
+    useGoogleMap();
+  const { properties } = useProperties({
+    setMarkers,
     searchStoreDetail,
-    map,
-    markers,
-  } = useGoogleMap();
-
-  useEffect(() => {
-    (async () => {
-      const res: Welcome = await fetch("/api/markers").then((res) =>
-        res.json()
-      );
-
-      setProperties(res.features);
-    })();
-  }, []);
+  });
 
   return (
     <Container>
-      <GoogleMap id="map" isDrawerOpen={isDrawerOpen} ref={mapContainer} />
+      <GoogleMap id="map" isDrawerOpen={isDrawerOpen} />
       <ContentsDrawer
-        mapRef={map}
         markers={markers}
         properties={properties}
         storeDetail={storeDetail}

@@ -1,26 +1,24 @@
-import { useRef, Dispatch, SetStateAction, RefObject } from "react";
 import Image from "next/image";
+import { useRef } from "react";
 import styled from "styled-components";
 
 import List from "components/List";
 
-import { useOnClickOutside, useDrawer } from "hooks";
+import { useOnClickOutside, useDrawer, CustomMarker } from "hooks";
 import { isFullObject } from "utils";
 import { Feature } from "types/model";
 
 interface Props {
-  mapRef: RefObject<google.maps.Map>;
   properties: Feature[];
   storeDetail: google.maps.places.PlaceResult;
   searchStoreDetail: (keyword: string) => void;
-  markers: { marker: google.maps.Marker; name: string }[];
+  markers: CustomMarker[];
 }
 
 const ContentsDrawer = ({
   properties,
   storeDetail,
   searchStoreDetail,
-  mapRef,
   markers,
 }: Props) => {
   const ref = useRef();
@@ -48,7 +46,6 @@ const ContentsDrawer = ({
             {...prop.geometry}
             searchStoreDetail={searchStoreDetail}
             markers={markers}
-            mapRef={mapRef}
           />
         ))}
       </StoreList>
