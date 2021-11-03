@@ -6,5 +6,6 @@ module.exports = {
   },
   publicRuntimeConfig: {
     staticFolder: '/static',
+    PROJECT_ROOT: __dirname,
   },
 };

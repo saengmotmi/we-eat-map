@@ -10,15 +10,17 @@ export default async function handler(req, res) {
   res.status(200).json(json);
 }
 
+const serverPath = staticFilePath => {
+  return path.join(getConfig().publicRuntimeConfig.PROJECT_ROOT, staticFilePath);
+};
+
 const isDevelopment = process.env.NODE_ENV === 'development';
-const BASE_URL = isDevelopment
-  ? 'http://localhost:3000'
-  : `https://we-eat-map.vercel.app${getConfig().publicRuntimeConfig.staticFolder}`;
+const BASE_URL = isDevelopment ? 'http://localhost:3000' : serverPath();
+// : `https://we-eat-map.vercel.app${getConfig().publicRuntimeConfig.staticFolder}`;
 
 function toKML() {
   return new Promise((resolve, reject) => {
-    console.log(process.env.NODE_ENV);
-    console.log(getConfig().publicRuntimeConfig);
+    console.log(serverPath());
     request(BASE_URL + '/test.kmz')
       .pipe(unzipper.Parse())
       .on('entry', entry => {
