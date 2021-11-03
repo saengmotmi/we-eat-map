@@ -16,7 +16,9 @@ const serverPath = staticFilePath => {
 };
 
 const isDevelopment = process.env.NODE_ENV === 'development';
-const BASE_URL = isDevelopment ? 'http://localhost:3000/test.kmz' : serverPath('/test.kmz');
+const BASE_URL = isDevelopment
+  ? 'http://localhost:3000/test.kmz'
+  : 'https://we-eat-map.vercel.app' + serverPath('/test.kmz');
 // : `https://we-eat-map.vercel.app${getConfig().publicRuntimeConfig.staticFolder}`;
 
 function toKML() {
