@@ -1,7 +1,7 @@
-import request from "request";
-import unzipper from "unzipper";
-import { DOMParser } from "xmldom";
-import togeojson from "togeojson";
+import request from 'request';
+import unzipper from 'unzipper';
+import { DOMParser } from 'xmldom';
+import togeojson from 'togeojson';
 
 export default async function handler(req, res) {
   const json = await toKML().then(toJSON);
@@ -9,22 +9,25 @@ export default async function handler(req, res) {
   res.status(200).json(json);
 }
 
+const isDevelopment = process.env.NODE_ENV !== 'development';
+const BASE_URL = isDevelopment ? 'http://localhost:3000' : 'https://we-eat-map.vercel.app/';
+
 function toKML() {
   return new Promise((resolve, reject) => {
-    request("http://localhost:3000/test.kmz")
+    request(BASE_URL + '/test.kmz')
       .pipe(unzipper.Parse())
-      .on("entry", (entry) => {
-        if (!entry.path.includes(".kml")) {
+      .on('entry', entry => {
+        if (!entry.path.includes('.kml')) {
           entry.autodrain();
           return;
         }
 
-        let data = "";
-        entry.on("error", reject);
-        entry.on("data", (chunk) => (data += chunk));
-        entry.on("end", () => resolve(data));
+        let data = '';
+        entry.on('error', reject);
+        entry.on('data', chunk => (data += chunk));
+        entry.on('end', () => resolve(data));
       })
-      .on("error", reject);
+      .on('error', reject);
   });
 }
 
