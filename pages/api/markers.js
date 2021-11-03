@@ -13,7 +13,7 @@ export default async function handler(req, res) {
 const isDevelopment = process.env.NODE_ENV !== 'development';
 const BASE_URL = isDevelopment
   ? 'http://localhost:3000'
-  : `https://we-eat-map.vercel.app/${getConfig().publicRuntimeConfig.staticFolder}`;
+  : `https://we-eat-map.vercel.app${getConfig().publicRuntimeConfig.staticFolder}`;
 
 function toKML() {
   return new Promise((resolve, reject) => {
