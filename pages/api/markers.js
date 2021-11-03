@@ -17,6 +17,7 @@ const BASE_URL = isDevelopment
 
 function toKML() {
   return new Promise((resolve, reject) => {
+    console.log(process.env.NODE_ENV);
     console.log(getConfig().publicRuntimeConfig);
     request(BASE_URL + '/test.kmz')
       .pipe(unzipper.Parse())
