@@ -10,7 +10,7 @@ export default async function handler(req, res) {
   res.status(200).json(json);
 }
 
-const isDevelopment = process.env.NODE_ENV !== 'development';
+const isDevelopment = process.env.NODE_ENV === 'development';
 const BASE_URL = isDevelopment
   ? 'http://localhost:3000'
   : `https://we-eat-map.vercel.app${getConfig().publicRuntimeConfig.staticFolder}`;
