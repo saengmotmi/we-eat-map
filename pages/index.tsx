@@ -5,12 +5,12 @@ import { useGoogleMap, useDrawer } from 'hooks';
 
 const Home: NextPage = () => {
   const { isDrawerOpen } = useDrawer();
-  const { searchStoreDetail, markers } = useGoogleMap();
+  const { markers } = useGoogleMap();
 
   return (
     <Container>
       <GoogleMap id="map" isDrawerOpen={isDrawerOpen} />
-      <ContentsDrawer markers={markers} searchStoreDetail={searchStoreDetail} />
+      <ContentsDrawer markers={markers} />
     </Container>
   );
 };

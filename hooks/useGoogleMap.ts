@@ -7,8 +7,8 @@ export type CustomMarker = { marker: google.maps.Marker; property: Feature };
 
 export const useGoogleMap = () => {
   useInitGoogleMap();
-  const [markers, setMarkers] = useState<CustomMarker[]>([]);
 
+  const [markers, setMarkers] = useState<CustomMarker[]>([]);
   const { searchStoreDetail } = useGoogleMapSearch();
   const { isLoading } = useProperties({
     setMarkers,
@@ -17,13 +17,11 @@ export const useGoogleMap = () => {
 
   return {
     markers,
-    setMarkers,
-    searchStoreDetail,
     isLoading,
   };
 };
 
-const useGoogleMapSearch = () => {
+export const useGoogleMapSearch = () => {
   const serviceRef = useRef<google.maps.places.PlacesService>();
   const { handleDrawerOpen } = useDrawer();
   const { handleStoreDetail } = useStoreDetail();

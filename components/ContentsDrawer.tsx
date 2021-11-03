@@ -2,26 +2,27 @@ import { useRef } from 'react';
 import styled from 'styled-components';
 import List from 'components/List';
 import { useOnClickOutside, useDrawer, useStoreDetail, CustomMarker } from 'hooks';
+import { useGoogleMapSearch } from 'hooks/useGoogleMap';
 import StoreDetail from './StoreDetail';
 
 interface Props {
-  searchStoreDetail: (keyword: string) => void;
   markers: CustomMarker[];
 }
 
-const ContentsDrawer = ({ searchStoreDetail, markers }: Props) => {
+const ContentsDrawer = ({ markers }: Props) => {
   const contentsDrawerRef = useRef();
   const { storeDetail } = useStoreDetail();
+  const { searchStoreDetail } = useGoogleMapSearch();
   const { isDrawerOpen, handleDrawerOpen } = useDrawer();
 
-  const handleClickOutSide = (e: any) => {
+  useOnClickOutside(contentsDrawerRef, handleClickOutSide);
+
+  function handleClickOutSide(e: React.MouseEvent<HTMLElement>) {
     const nodeList = document.querySelectorAll("div[role='button']");
-    const isMarkerClicked = [...nodeList].some(node => node.contains(e.target));
+    const isMarkerClicked = [...nodeList].some(node => node.contains(e.target as Node));
 
     if (!isMarkerClicked) handleDrawerOpen(false);
-  };
-
-  useOnClickOutside(contentsDrawerRef, handleClickOutSide);
+  }
 
   const storeImgURL = storeDetail.photos?.[0].getUrl();
 
