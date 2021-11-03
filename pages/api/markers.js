@@ -16,13 +16,14 @@ const serverPath = staticFilePath => {
 };
 
 const isDevelopment = process.env.NODE_ENV === 'development';
-const BASE_URL = isDevelopment ? 'http://localhost:3000' : serverPath();
+const BASE_URL = isDevelopment ? 'http://localhost:3000/test.kmz' : serverPath('/test.kmz');
 // : `https://we-eat-map.vercel.app${getConfig().publicRuntimeConfig.staticFolder}`;
 
 function toKML() {
   return new Promise((resolve, reject) => {
     console.log(serverPath());
-    request(BASE_URL + '/test.kmz')
+    // request(BASE_URL + '/test.kmz')
+    request(BASE_URL)
       .pipe(unzipper.Parse())
       .on('entry', entry => {
         if (!entry.path.includes('.kml')) {
