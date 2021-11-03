@@ -1,3 +1,4 @@
+import getConfig from 'next/config';
 import request from 'request';
 import unzipper from 'unzipper';
 import { DOMParser } from 'xmldom';
@@ -10,10 +11,13 @@ export default async function handler(req, res) {
 }
 
 const isDevelopment = process.env.NODE_ENV !== 'development';
-const BASE_URL = isDevelopment ? 'http://localhost:3000' : 'https://we-eat-map.vercel.app/';
+const BASE_URL = isDevelopment
+  ? 'http://localhost:3000'
+  : `https://we-eat-map.vercel.app/${getConfig().publicRuntimeConfig.staticFolder}`;
 
 function toKML() {
   return new Promise((resolve, reject) => {
+    console.log(getConfig().publicRuntimeConfig);
     request(BASE_URL + '/test.kmz')
       .pipe(unzipper.Parse())
       .on('entry', entry => {
