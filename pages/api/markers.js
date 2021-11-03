@@ -1,3 +1,4 @@
+import path from 'path';
 import getConfig from 'next/config';
 import request from 'request';
 import unzipper from 'unzipper';
