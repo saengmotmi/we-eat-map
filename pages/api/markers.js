@@ -21,7 +21,7 @@ const BASE_URL = isDevelopment ? 'http://localhost:3000/test.kmz' : serverPath('
 
 function toKML() {
   return new Promise((resolve, reject) => {
-    console.log(serverPath());
+    console.log(serverPath('/test.kmz'));
     // request(BASE_URL + '/test.kmz')
     request(BASE_URL)
       .pipe(unzipper.Parse())
