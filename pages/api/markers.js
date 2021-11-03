@@ -16,16 +16,13 @@ const serverPath = staticFilePath => {
 };
 
 const isDevelopment = process.env.NODE_ENV === 'development';
-const BASE_URL = isDevelopment
-  ? 'http://localhost:3000/test.kmz'
-  : 'https://we-eat-map.vercel.app' + serverPath('/test.kmz');
-// : `https://we-eat-map.vercel.app${getConfig().publicRuntimeConfig.staticFolder}`;
+const BASE_URL = isDevelopment ? 'http://localhost:3000' : 'https://we-eat-map.vercel.app';
 
 function toKML() {
   return new Promise((resolve, reject) => {
-    console.log(serverPath('/test.kmz'));
-    // request(BASE_URL + '/test.kmz')
-    request(BASE_URL)
+    request(
+      'https://firebasestorage.googleapis.com/v0/b/bulchimbun.appspot.com/o/test.kmz?alt=media&token=2fbdc19e-31aa-47c0-ab27-8743d173ce04'
+    )
       .pipe(unzipper.Parse())
       .on('entry', entry => {
         if (!entry.path.includes('.kml')) {

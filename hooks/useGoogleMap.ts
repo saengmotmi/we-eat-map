@@ -55,7 +55,7 @@ const useInitGoogleMap = () => {
         zoom: 7,
       };
 
-      map = new google.maps.Map(document.getElementById('map') as HTMLElement, initPosition);
+      map = new window.google.maps.Map(document.getElementById('map') as HTMLElement, initPosition);
     })();
   }, []);
 };
