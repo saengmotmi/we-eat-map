@@ -1,9 +1,9 @@
-import type { NextPage } from "next";
-import styled from "styled-components";
+import type { NextPage } from 'next';
+import styled from 'styled-components';
 
-import ContentsDrawer from "components/ContentsDrawer";
+import ContentsDrawer from 'components/ContentsDrawer';
 
-import { useGoogleMap, useDrawer } from "hooks";
+import { useGoogleMap, useDrawer } from 'hooks';
 
 const Home: NextPage = () => {
   const { isDrawerOpen } = useDrawer();
@@ -12,11 +12,7 @@ const Home: NextPage = () => {
   return (
     <Container>
       <GoogleMap id="map" isDrawerOpen={isDrawerOpen} />
-      <ContentsDrawer
-        markers={markers}
-        storeDetail={storeDetail}
-        searchStoreDetail={searchStoreDetail}
-      />
+      <ContentsDrawer markers={markers} storeDetail={storeDetail} searchStoreDetail={searchStoreDetail} />
     </Container>
   );
 };
@@ -29,6 +25,6 @@ const Container = styled.main`
 `;
 
 const GoogleMap = styled.div<{ isDrawerOpen: boolean }>`
-  height: ${({ isDrawerOpen }) => (isDrawerOpen ? "50vh" : "100vh")};
+  height: ${({ isDrawerOpen }) => (isDrawerOpen ? '30vh' : '100vh')};
   transition: all 0.5s ease-in-out;
 `;

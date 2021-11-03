@@ -1,5 +1,6 @@
-import { map, CustomMarker } from "hooks/useGoogleMap";
-import { Properties } from "types/model";
+import styled from 'styled-components';
+import { map, CustomMarker } from 'hooks/useGoogleMap';
+import { Properties } from 'types/model';
 
 interface Props extends Properties {
   markers: CustomMarker[];
@@ -7,18 +8,20 @@ interface Props extends Properties {
 }
 
 export default function List({ name, markers, searchStoreDetail }: Props) {
-  return (
-    <li
-      onClick={() => {
-        const marker = markers.find(
-          ({ property }) => property.properties.name === name
-        );
+  const handleSearchFocus = () => {
+    const selectedMarker = markers.find(({ property }) => property.properties.name === name);
 
-        map!.setCenter(marker?.marker.getPosition() as google.maps.LatLng);
-        searchStoreDetail(name);
-      }}
-    >
-      {name}
-    </li>
-  );
+    map!.setCenter(selectedMarker?.marker.getPosition() as google.maps.LatLng);
+    searchStoreDetail(name);
+  };
+
+  return <Container onClick={handleSearchFocus}>{name}</Container>;
 }
+
+const Container = styled.li`
+  padding: 15px 20px;
+
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.bgWhite};
+  }
+`;
