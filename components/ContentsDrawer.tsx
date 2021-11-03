@@ -10,7 +10,7 @@ interface Props {
 }
 
 const ContentsDrawer = ({ markers }: Props) => {
-  const contentsDrawerRef = useRef();
+  const contentsDrawerRef = useRef<HTMLDivElement>(null);
   const { storeDetail } = useStoreDetail();
   const { searchStoreDetail } = useGoogleMapSearch();
   const { isDrawerOpen, handleDrawerOpen } = useDrawer();
