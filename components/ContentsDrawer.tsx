@@ -1,19 +1,17 @@
 import { useRef } from 'react';
 import styled from 'styled-components';
-
 import List from 'components/List';
-
-import { useOnClickOutside, useDrawer, CustomMarker } from 'hooks';
+import { useOnClickOutside, useDrawer, useStoreDetail, CustomMarker } from 'hooks';
 import StoreDetail from './StoreDetail';
 
 interface Props {
-  storeDetail: google.maps.places.PlaceResult;
   searchStoreDetail: (keyword: string) => void;
   markers: CustomMarker[];
 }
 
-const ContentsDrawer = ({ storeDetail, searchStoreDetail, markers }: Props) => {
-  const ref = useRef();
+const ContentsDrawer = ({ searchStoreDetail, markers }: Props) => {
+  const contentsDrawerRef = useRef();
+  const { storeDetail } = useStoreDetail();
   const { isDrawerOpen, handleDrawerOpen } = useDrawer();
 
   const handleClickOutSide = (e: any) => {
@@ -23,12 +21,12 @@ const ContentsDrawer = ({ storeDetail, searchStoreDetail, markers }: Props) => {
     if (!isMarkerClicked) handleDrawerOpen(false);
   };
 
-  useOnClickOutside(ref, handleClickOutSide);
+  useOnClickOutside(contentsDrawerRef, handleClickOutSide);
 
   const storeImgURL = storeDetail.photos?.[0].getUrl();
 
   return (
-    <Container ref={ref}>
+    <Container ref={contentsDrawerRef}>
       <Tab onClick={() => handleDrawerOpen(!isDrawerOpen)} />
       <StoreList>
         {markers.map(({ property: prop }, idx) => (

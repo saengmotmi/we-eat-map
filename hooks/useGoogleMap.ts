@@ -1,6 +1,6 @@
-import { useState, useEffect, useRef } from "react";
-import { useDrawer, useStoreDetail, useProperties } from "hooks";
-import { Feature } from "types/model";
+import { useState, useEffect, useRef } from 'react';
+import { useDrawer, useStoreDetail, useProperties } from 'hooks';
+import { Feature } from 'types/model';
 
 export let map: google.maps.Map | null = null;
 export type CustomMarker = { marker: google.maps.Marker; property: Feature };
@@ -9,7 +9,6 @@ export const useGoogleMap = () => {
   useInitGoogleMap();
   const [markers, setMarkers] = useState<CustomMarker[]>([]);
 
-  const { storeDetail } = useStoreDetail();
   const { searchStoreDetail } = useGoogleMapSearch();
   const { isLoading } = useProperties({
     setMarkers,
@@ -17,7 +16,6 @@ export const useGoogleMap = () => {
   });
 
   return {
-    storeDetail,
     markers,
     setMarkers,
     searchStoreDetail,
@@ -41,7 +39,7 @@ const useGoogleMapSearch = () => {
 
     serviceRef.current = new google.maps.places.PlacesService(map!);
     serviceRef.current.textSearch(request, (results, status) => {
-      if (!results!.length) alert("해당 장소에 대한 정보를 찾지 못했습니다");
+      if (!results!.length) alert('해당 장소에 대한 정보를 찾지 못했습니다');
       if (status == google.maps.places.PlacesServiceStatus.OK) {
         handleStoreDetail(results![0]);
       }
@@ -59,10 +57,7 @@ const useInitGoogleMap = () => {
         zoom: 7,
       };
 
-      map = new google.maps.Map(
-        document.getElementById("map") as HTMLElement,
-        initPosition
-      );
+      map = new google.maps.Map(document.getElementById('map') as HTMLElement, initPosition);
     })();
   }, []);
 };

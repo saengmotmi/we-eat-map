@@ -1,18 +1,16 @@
 import type { NextPage } from 'next';
 import styled from 'styled-components';
-
 import ContentsDrawer from 'components/ContentsDrawer';
-
 import { useGoogleMap, useDrawer } from 'hooks';
 
 const Home: NextPage = () => {
   const { isDrawerOpen } = useDrawer();
-  const { storeDetail, searchStoreDetail, markers } = useGoogleMap();
+  const { searchStoreDetail, markers } = useGoogleMap();
 
   return (
     <Container>
       <GoogleMap id="map" isDrawerOpen={isDrawerOpen} />
-      <ContentsDrawer markers={markers} storeDetail={storeDetail} searchStoreDetail={searchStoreDetail} />
+      <ContentsDrawer markers={markers} searchStoreDetail={searchStoreDetail} />
     </Container>
   );
 };
